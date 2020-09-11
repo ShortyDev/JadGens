@@ -1,7 +1,6 @@
 package ml.jadss.jadgens.listeners;
 
 import ml.jadss.jadgens.JadGens;
-import ml.jadss.jadgens.utils.Machine;
 import ml.jadss.jadgens.utils.MachineLookup;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -15,14 +14,15 @@ import org.bukkit.event.block.BlockPistonRetractEvent;
 public class PistonMoveListener implements Listener {
 
     @EventHandler
-    public void pistonExtendEvent(BlockPistonExtendEvent e) {
-        if (!JadGens.getInstance().getConfig().getBoolean("machinesConfig.preventPistonsMoveMachines")) return;
+    public void onPistonExtend(BlockPistonExtendEvent event) {
+        if (!JadGens.getInstance().getConfig().getBoolean("machinesConfig.preventPistonsMoveMachines"))
+            return;
         MachineLookup checker = new MachineLookup();
-        for (Block b : e.getBlocks()) {
-            if (checker.isMachine(b)) {
-                e.setCancelled(true);
+        for (Block block : event.getBlocks()) {
+            if (checker.isMachine(block)) {
+                event.setCancelled(true);
                 for (Player nearPlayer : Bukkit.getOnlinePlayers()) {
-                    if (nearPlayer.getLocation().distance(b.getLocation()) <= 5) {
+                    if (nearPlayer.getLocation().distance(block.getLocation()) <= 5) {
                         nearPlayer.sendMessage(ChatColor.translateAlternateColorCodes('&', JadGens.getInstance().getConfig().getString("messages.noPistonMoving")));
                     }
                 }
@@ -32,14 +32,15 @@ public class PistonMoveListener implements Listener {
     }
 
     @EventHandler
-    public void pistonRetractEvent(BlockPistonRetractEvent e) {
-        if (!JadGens.getInstance().getConfig().getBoolean("machinesConfig.preventPistonsMoveMachines")) return;
+    public void onPistonRetrace(BlockPistonRetractEvent event) {
+        if (!JadGens.getInstance().getConfig().getBoolean("machinesConfig.preventPistonsMoveMachines"))
+            return;
         MachineLookup checker = new MachineLookup();
-        for (Block b : e.getBlocks()) {
-            if (checker.isMachine(b)) {
-                e.setCancelled(true);
+        for (Block block : event.getBlocks()) {
+            if (checker.isMachine(block)) {
+                event.setCancelled(true);
                 for (Player nearPlayer : Bukkit.getOnlinePlayers()) {
-                    if (nearPlayer.getLocation().distance(b.getLocation()) <= 5) {
+                    if (nearPlayer.getLocation().distance(block.getLocation()) <= 5) {
                         nearPlayer.sendMessage(ChatColor.translateAlternateColorCodes('&', JadGens.getInstance().getConfig().getString("messages.noPistonMoving")));
                     }
                 }

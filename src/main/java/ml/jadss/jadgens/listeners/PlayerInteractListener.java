@@ -15,34 +15,34 @@ import org.bukkit.inventory.ItemStack;
 public class PlayerInteractListener implements Listener {
 
     @EventHandler
-    public void onInteractListener(PlayerInteractEvent e) {
-        Player pl = e.getPlayer();
-        ItemStack item = e.getItem();
-        Block block = e.getClickedBlock();
+    public void onPlayerInteract(PlayerInteractEvent event) {
+        Player player = event.getPlayer();
+        ItemStack item = event.getItem();
+        Block block = event.getClickedBlock();
         if (new Fuel().isFuel(item)) {
-            e.setCancelled(true);
-            if (pl.isSneaking()) {
+            event.setCancelled(true);
+            if (player.isSneaking()) {
                 Fuel fuel = new Fuel(item);
                 if (new MachineLookup().isMachine(block)) {
                     String id = block.getLocation().getWorld().getName() + "_" + block.getLocation().getBlockX() + "_" + block.getLocation().getBlockY() + "_" + block.getLocation().getBlockZ();
                     Machine machine = new Machine(id);
                     if (!(JadGens.getInstance().getConfig().getBoolean("machines." + machine.getType() + ".needsFuelToProduce"))) {
-                        pl.sendMessage(ChatColor.translateAlternateColorCodes('&', JadGens.getInstance().getConfig().getString("messages.fuelMessages.machineNotAcceptingFuel")));
+                        player.sendMessage(ChatColor.translateAlternateColorCodes('&', JadGens.getInstance().getConfig().getString("messages.fuelMessages.machineNotAcceptingFuel")));
                     } else {
                         Integer drops = machine.getDropsRemaining();
                         if (drops + fuel.getDrops() <= JadGens.getInstance().getConfig().getInt("machines." + machine.getType() + ".maxFuel")) {
-                            ItemStack inHand = pl.getItemInHand();
+                            ItemStack inHand = player.getItemInHand();
                             inHand.setAmount(inHand.getAmount() - 1);
-                            pl.setItemInHand(inHand);
-                            machine.setDropsRemaining( machine.getDropsRemaining() + fuel.getDrops() );
+                            player.setItemInHand(inHand);
+                            machine.setDropsRemaining(machine.getDropsRemaining() + fuel.getDrops());
                             machine.addToConfig();
-                            pl.sendMessage(ChatColor.translateAlternateColorCodes('&', JadGens.getInstance().getConfig().getString("messages.fuelMessages.used")));
+                            player.sendMessage(ChatColor.translateAlternateColorCodes('&', JadGens.getInstance().getConfig().getString("messages.fuelMessages.used")));
                         } else {
-                            pl.sendMessage(ChatColor.translateAlternateColorCodes('&', JadGens.getInstance().getConfig().getString("messages.fuelMessages.doesntAcceptMoreFuel")));
+                            player.sendMessage(ChatColor.translateAlternateColorCodes('&', JadGens.getInstance().getConfig().getString("messages.fuelMessages.doesntAcceptMoreFuel")));
                         }
                     }
                 } else {
-                    pl.sendMessage(ChatColor.translateAlternateColorCodes('&', JadGens.getInstance().getConfig().getString("messages.fuelMessages.notAMachine")));
+                    player.sendMessage(ChatColor.translateAlternateColorCodes('&', JadGens.getInstance().getConfig().getString("messages.fuelMessages.notAMachine")));
                 }
             }
         }

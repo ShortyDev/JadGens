@@ -15,7 +15,8 @@ import java.util.Set;
 
 public class Shop {
 
-    public Shop() { return; }
+    public Shop() {
+    }
 
     public Inventory getShopInventory(String shopInv) {
         if (shopInv.equalsIgnoreCase("machines")) {
@@ -27,15 +28,12 @@ public class Shop {
         return null;
     }
 
-    // shop.shopMainMenu.machinesItem .fuelsItem
-
     private Inventory createMainShop() {
-        Inventory inv = Bukkit.createInventory(null, 27, ChatColor.translateAlternateColorCodes('&', JadGens.getInstance().getConfig().getString("shop.shopTitle")));
+        Inventory inventory = Bukkit.createInventory(null, 27, ChatColor.translateAlternateColorCodes('&', JadGens.getInstance().getConfig().getString("shop.shopTitle")));
 
-        //fill the gui with stained glass.
         ItemStack itemBack = new ItemStack(new Compatibility().getMaterial(JadGens.getInstance().getConfig().getString("shop.backgroundItem.material")), 1, (short) JadGens.getInstance().getConfig().getInt("shop.backgroundItem.damage"));
-        for(int i = 0;i < 27; i++) {
-            inv.setItem(i, itemBack);
+        for (int i = 0; i < 27; i++) {
+            inventory.setItem(i, itemBack);
         }
 
         ItemStack machinesItem = new ItemStack(new Compatibility().getMaterial(JadGens.getInstance().getConfig().getString("shop.shopMainMenu.machinesItem.material")), 1, (short) JadGens.getInstance().getConfig().getInt("shop.shopMainMenu.machinesItem.damage"));
@@ -46,11 +44,9 @@ public class Shop {
         machinesMeta.setDisplayName(ChatColor.translateAlternateColorCodes('&', JadGens.getInstance().getConfig().getString("shop.shopMainMenu.machinesItem.name")));
         fuelsMeta.setDisplayName(ChatColor.translateAlternateColorCodes('&', JadGens.getInstance().getConfig().getString("shop.shopMainMenu.fuelsItem.name")));
 
-        //defining Lists.
         List<String> machinesLore = new ArrayList<>();
         List<String> fuelsLore = new ArrayList<>();
 
-        //Setting lores.
         for (String loreString : JadGens.getInstance().getConfig().getStringList("shop.shopMainMenu.machinesItem.lore")) {
             machinesLore.add(ChatColor.translateAlternateColorCodes('&', loreString));
         }
@@ -74,21 +70,18 @@ public class Shop {
         machinesItem = machinesNBT.getItem();
         fuelsItem = fuelsNBT.getItem();
 
-        inv.setItem(JadGens.getInstance().getConfig().getInt("shop.shopMainMenu.machinesItem.slot")-1, machinesItem);
-        inv.setItem(JadGens.getInstance().getConfig().getInt("shop.shopMainMenu.fuelsItem.slot")-1, fuelsItem);
+        inventory.setItem(JadGens.getInstance().getConfig().getInt("shop.shopMainMenu.machinesItem.slot") - 1, machinesItem);
+        inventory.setItem(JadGens.getInstance().getConfig().getInt("shop.shopMainMenu.fuelsItem.slot") - 1, fuelsItem);
 
-        return inv;
+        return inventory;
     }
 
-
-
     private Inventory createMachinesShop() {
-        Inventory inv = Bukkit.createInventory(null, 27, ChatColor.translateAlternateColorCodes('&', JadGens.getInstance().getConfig().getString("shop.shopTitle")));
+        Inventory inventory = Bukkit.createInventory(null, 27, ChatColor.translateAlternateColorCodes('&', JadGens.getInstance().getConfig().getString("shop.shopTitle")));
 
-        //fill the gui with stained glass.
         ItemStack itemBack = new ItemStack(new Compatibility().getMaterial(JadGens.getInstance().getConfig().getString("shop.backgroundItem.material")), 1, (short) JadGens.getInstance().getConfig().getInt("shop.backgroundItem.damage"));
         for (int i = 0; i < 27; i++) {
-            inv.setItem(i, itemBack);
+            inventory.setItem(i, itemBack);
         }
 
         Set<String> keys = JadGens.getInstance().getConfig().getConfigurationSection("machines").getKeys(false);
@@ -125,16 +118,14 @@ public class Shop {
             nbtItem.setInteger("JadGens_BuyID", Integer.parseInt(key));
             item = nbtItem.getItem();
 
-            inv.setItem(JadGens.getInstance().getConfig().getInt("machines." + key + ".shop.slot")-1, item);
+            inventory.setItem(JadGens.getInstance().getConfig().getInt("machines." + key + ".shop.slot") - 1, item);
         }
-
-        return inv;
+        return inventory;
     }
 
     private Inventory createFuelsShop() {
         Inventory inv = Bukkit.createInventory(null, 27, ChatColor.translateAlternateColorCodes('&', JadGens.getInstance().getConfig().getString("shop.shopTitle")));
 
-        //fill the gui with stained glass.
         ItemStack itemBack = new ItemStack(new Compatibility().getMaterial(JadGens.getInstance().getConfig().getString("shop.backgroundItem.material")), 1, (short) JadGens.getInstance().getConfig().getInt("shop.backgroundItem.damage"));
         for (int i = 0; i < 27; i++) {
             inv.setItem(i, itemBack);
@@ -170,7 +161,7 @@ public class Shop {
             nbtItem.setInteger("JadGens_BuyID", Integer.parseInt(key));
             item = nbtItem.getItem();
 
-            inv.setItem(JadGens.getInstance().getConfig().getInt("fuels." + key + ".shop.slot")-1, item);
+            inv.setItem(JadGens.getInstance().getConfig().getInt("fuels." + key + ".shop.slot") - 1, item);
         }
         return inv;
     }

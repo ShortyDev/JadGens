@@ -1,5 +1,7 @@
 package ml.jadss.jadgens.utils;
 
+import lombok.Getter;
+import lombok.Setter;
 import ml.jadss.jadgens.JadGens;
 import ml.jadss.jadgens.nbt.NBTItem;
 import ml.jadss.jadgens.nbt.NbtApiException;
@@ -15,12 +17,14 @@ import org.bukkit.inventory.meta.ItemMeta;
 import java.util.ArrayList;
 import java.util.List;
 
+@Getter
 public class Machine {
 
-    private String id;
-    private Location location;
-    private Integer type;
-    private String uuid;
+    private final String id;
+    private final Location location;
+    private final Integer type;
+    private final String uuid;
+    @Setter
     private Integer dropsRemaining;
 
     public Machine() {
@@ -83,7 +87,7 @@ public class Machine {
     }
 
     public void addToConfig() {
-        data().set("machines." + this.getId() + ".owner", this.getOwner());
+        data().set("machines." + this.getId() + ".owner", this.getUuid());
         data().set("machines." + this.getId() + ".world", this.getLocation().getWorld().getName());
         data().set("machines." + this.getId() + ".x", this.getLocation().getBlockX());
         data().set("machines." + this.getId() + ".y", this.getLocation().getBlockY());
@@ -93,34 +97,27 @@ public class Machine {
         JadGens.getInstance().getDataFile().saveData();
     }
 
-    public void removefromConfig() {
+    public void removeFromConfig() {
         data().set("machines." + this.getId(), null);
         JadGens.getInstance().getDataFile().saveData();
     }
 
-    public void setDropsRemaining(Integer drops) { this.dropsRemaining = drops; }
-
     public Inventory createGUI() {
         if (this.id == null) return null;
         Inventory gui = Bukkit.createInventory(null, 9, ChatColor.translateAlternateColorCodes('&', JadGens.getInstance().getConfig().getString("machineGui.title")));
-
-        ItemStack backitem = new ItemStack(new Compatibility().getMaterial(JadGens.getInstance().getConfig().getString("machineGui.dropsCheckItem.backItem.material")), 1, (short) JadGens.getInstance().getConfig().getInt("machineGui.dropsCheckItem.backItem.damage"));
+        ItemStack backItem = new ItemStack(new Compatibility().getMaterial(JadGens.getInstance().getConfig().getString("machineGui.dropsCheckItem.backItem.material")), 1, (short) JadGens.getInstance().getConfig().getInt("machineGui.dropsCheckItem.backItem.damage"));
         for (int i = 8; i > -1; i--) {
-            gui.setItem(i, backitem);
+            gui.setItem(i, backItem);
         }
-
         if (JadGens.getInstance().getConfig().getBoolean("machineGui.dropsCheckItem.enabled")) {
             ItemStack dropsItem = new ItemStack(Material.getMaterial(JadGens.getInstance().getConfig().getString("machineGui.dropsCheckItem.item.material")),
                     1,
                     (short) JadGens.getInstance().getConfig().getInt("machineGui.dropsCheckItem.item.damage"));
-
             ItemMeta dropsMeta = dropsItem.getItemMeta();
-
             dropsMeta.setDisplayName(ChatColor.translateAlternateColorCodes('&', JadGens.getInstance().getConfig().getString("machineGui.dropsCheckItem.displayName")));
             List<String> lore = new ArrayList<>();
             if (JadGens.getInstance().getConfig().getBoolean("machines." + this.type + ".needsFuelToProduce")) {
                 for (String s : JadGens.getInstance().getConfig().getStringList("machineGui.dropsCheckItem.lore")) {
-                    //placeholders: %remaining%, %max%
                     lore.add(ChatColor.translateAlternateColorCodes('&',
                             s.replace("%remaining%", String.valueOf(this.getDropsRemaining()))
                                     .replace("%max%", String.valueOf(JadGens.getInstance().getConfig().getInt("machines." + this.type + ".maxFuel")))));
@@ -130,7 +127,6 @@ public class Machine {
                     lore.add(ChatColor.translateAlternateColorCodes('&', s));
                 }
             }
-
             dropsMeta.setLore(lore);
             dropsItem.setItemMeta(dropsMeta);
 
@@ -170,19 +166,7 @@ public class Machine {
         return machine;
     }
 
-    public String getId() {
-        return id;
-    }
-    public Location getLocation() { return location; }
-    public Integer getType() {
-        return type;
-    }
-    public String getOwner() { return uuid; }
-    public Integer getDropsRemaining() {
-        return dropsRemaining;
-    }
-
     protected FileConfiguration data() {
-        return JadGens.getInstance().getDataFile().data();
+        return JadGens.getInstance().getDataFile().getData();
     }
 }

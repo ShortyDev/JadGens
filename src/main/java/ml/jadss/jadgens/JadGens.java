@@ -1,5 +1,7 @@
 package ml.jadss.jadgens;
 
+import lombok.Getter;
+import lombok.Setter;
 import ml.jadss.jadgens.commands.JadGensCommand;
 import ml.jadss.jadgens.commands.TabCompleter;
 import ml.jadss.jadgens.listeners.*;
@@ -16,63 +18,32 @@ import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitTask;
 
+@Getter
 public class JadGens extends JavaPlugin {
 
+    @Getter
+    private static JadGens instance;
     private DataFile dataFile;
-    public DataFile getDataFile() {
-        return dataFile;
-    }
-
-    //hook booleans.
+    //hook booleans
     private boolean hookedVault = false;
-    public boolean isHookedVault() {
-        return hookedVault;
-    }
-
     private boolean hookedPlaceHolderAPI = false;
-    public boolean isHookedPlaceHolderAPI() {
-        return hookedPlaceHolderAPI;
-    }
-
     private boolean hookedPlayerPoints = false;
-    public boolean isHookedPlayerPoints() {
-        return hookedPlayerPoints;
-    }
-
     //hooks
     private Economy eco;
-    public Economy getEco() {
-        return eco;
-    }
-
     private PlayerPointsAPI pointsAPI;
-    public PlayerPointsAPI getPointsAPI() {
-        return pointsAPI;
-    }
-
     private MetricsLite metrics;
-
     //tasks
+    @Setter
     private BukkitTask task;
-    public BukkitTask getTask() {
-        return task;
-    }
-    public void setTask(BukkitTask t) {
-        task = t;
-    }
-
-    private static JadGens instance;
-    public static JadGens getInstance() {
-        return instance;
-    }
+    //API STUFF
+    private boolean apiDebug;
 
     @Override
     public void onEnable() {
-
+        instance = this;
         getConfig().options().copyDefaults();
         saveDefaultConfig();
         reloadConfig();
-
 
         hookVault();
         hookPlaceHolderAPI();
@@ -87,10 +58,6 @@ public class JadGens extends JavaPlugin {
         if (hookedPlayerPoints) {
             Bukkit.getConsoleSender().sendMessage(ChatColor.translateAlternateColorCodes('&', "&3JadGens &7>> &eHooked into &bPlayerPoints&e!"));
         }
-
-        Bukkit.getConsoleSender().sendMessage(ChatColor.translateAlternateColorCodes('&', "&3JadGens &7>> &eHooked into &bXP&e!"));
-
-        instance = this;
 
         if (!setupShop()) {
             getServer().getPluginManager().disablePlugin(this);
@@ -114,22 +81,16 @@ public class JadGens extends JavaPlugin {
         Bukkit.getConsoleSender().sendMessage(ChatColor.translateAlternateColorCodes('&', "&3JadGens &7>> &bDisabling &3Plugin&e!"));
     }
 
-
-    //API STUFF
-    private boolean APIDebug;
-
     public void setupAPIDebug() {
-        APIDebug = getConfig().getBoolean("messages.debugAPI");
+        apiDebug = getConfig().getBoolean("messages.debugAPI");
     }
 
     public boolean isAPIDebugEnabled() {
-        if (this.getConfig().getBoolean("messages.debugAPI") != APIDebug) {
+        if (this.getConfig().getBoolean("messages.debugAPI") != apiDebug) {
             Bukkit.getConsoleSender().sendMessage(ChatColor.translateAlternateColorCodes('&', "&3JadGens &7>> &eA plugin tried to disable API Debug, but it was reverted."));
-            APIDebug = getConfig().getBoolean("messages.debugAPI");
-            return APIDebug;
-        } else {
-            return APIDebug;
+            apiDebug = getConfig().getBoolean("messages.debugAPI");
         }
+        return apiDebug;
     }
     //END OF API STUFF
 

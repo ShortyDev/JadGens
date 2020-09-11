@@ -6,10 +6,16 @@ import org.bukkit.inventory.InventoryView;
 
 public class Compatibility {
 
-    public Compatibility() { return; }
+    public Compatibility() {
+    }
 
-    public String aDontUseThisMethod() { return "DON'T USE THIS METHOD! IT IS FOR COMPATIBILITY FOR ALL THE VERSION SUPPORTED BY THE PLUGIN!"; }
-    public String thisIsForCompatbility() { return "DON'T USE THIS METHOD! IT IS FOR COMPATIBILITY FOR ALL THE VERSION SUPPORTED BY THE PLUGIN!"; }
+    public String aDontUseThisMethod() {
+        return "DON'T USE THIS METHOD! IT IS FOR COMPATIBILITY FOR ALL THE VERSION SUPPORTED BY THE PLUGIN!";
+    }
+
+    public String thisIsForCompatbility() {
+        return "DON'T USE THIS METHOD! IT IS FOR COMPATIBILITY FOR ALL THE VERSION SUPPORTED BY THE PLUGIN!";
+    }
 
     public Material getMaterial(String block) {
         if (block.equalsIgnoreCase("STAINED_GLASS")) {
@@ -20,18 +26,15 @@ public class Compatibility {
 
     private Material glassPane() {
         try {
-            @SuppressWarnings("unchecked")
-            Material m = Enum.valueOf((Class<Material>) Class.forName("org.bukkit.Material"), "GLASS_PANE");
-            return m;
-        } catch (IllegalArgumentException | ClassNotFoundException exception) {
+            return Material.valueOf("GLASS_PANE");
+        } catch (IllegalArgumentException exception) {
             return Material.STAINED_GLASS_PANE;
         }
     }
 
     public String getTitle(Inventory inv, InventoryView invView) {
         try {
-            String var = inv.getName();
-            return var;
+            return inv.getName();
         } catch (NoSuchMethodError e) {
             return invView.getTitle();
         }

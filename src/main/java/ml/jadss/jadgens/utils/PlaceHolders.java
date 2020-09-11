@@ -36,16 +36,18 @@ public class PlaceHolders extends PlaceholderExpansion {
 
     @Override
     public String onPlaceholderRequest(Player p, String params) {
-        if (p == null) { return null; }
+        if (p == null) {
+            return null;
+        }
 
         String[] splitParams = params.split("_");
         if (splitParams.length != 2) return null;
 
-        String ident = splitParams[0];
+        String identifier = splitParams[0];
         String type = splitParams[1];
         int iType;
 
-        if (ident.equalsIgnoreCase("machines")) {
+        if (identifier.equalsIgnoreCase("machines")) {
             if (type.equalsIgnoreCase("total")) {
                 return String.valueOf(new MachineLookup().getMachines(p.getUniqueId()));
             } else {

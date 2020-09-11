@@ -13,7 +13,8 @@ public class DataFile {
 
     private File dataFile;
     private FileConfiguration data;
-    public FileConfiguration data() {
+
+    public FileConfiguration getData() {
         return data;
     }
 

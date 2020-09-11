@@ -10,10 +10,11 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 public class InventoryClickListener implements Listener {
 
     @EventHandler
-    public void inventoryClick(InventoryClickEvent e) {
-        if (e.getClickedInventory() == null) return;
-        if (new Compatibility().getTitle(e.getClickedInventory(), e.getView()).equals(ChatColor.translateAlternateColorCodes('&', JadGens.getInstance().getConfig().getString("machineGui.title")))) {
-            e.setCancelled(true);
+    public void onInventoryClick(InventoryClickEvent event) {
+        if (event.getClickedInventory() == null)
+            return;
+        if (new Compatibility().getTitle(event.getClickedInventory(), event.getView()).equals(ChatColor.translateAlternateColorCodes('&', JadGens.getInstance().getConfig().getString("machineGui.title")))) {
+            event.setCancelled(true);
         }
     }
 }

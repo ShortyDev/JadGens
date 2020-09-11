@@ -1,10 +1,14 @@
 package ml.jadss.jadgens.events;
 
+import lombok.Getter;
+import lombok.Setter;
 import org.bukkit.command.CommandSender;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 
 @SuppressWarnings("unused")
+@Getter
+@Setter
 public class CustomJadGensCommandArg extends Event {
 
     private static final HandlerList handlers = new HandlerList();
@@ -20,21 +24,8 @@ public class CustomJadGensCommandArg extends Event {
         this.arguments = args;
     }
 
-    public void setUse(boolean use) {
-        used = use;
-    }
-    public boolean isUsed() { return used; }
-
-    public CommandSender getSender() {
-        return sender;
-    }
-    public String getCommand() { return command; }
-    public String[] getArguments() { return arguments; }
-
+    @Override
     public HandlerList getHandlers() {
-        return handlers;
-    }
-    public static HandlerList getHandlerList() {
-        return handlers;
+        return null;
     }
 }

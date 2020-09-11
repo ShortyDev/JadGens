@@ -1,15 +1,11 @@
 package ml.jadss.jadgens.utils;
 
 import ml.jadss.jadgens.JadGens;
-import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
-
-import java.util.UUID;
 
 public class MachineLimiter {
 
     public MachineLimiter() {
-        return;
     }
 
     public int getMaxLimit(Player pl) {
@@ -35,9 +31,9 @@ public class MachineLimiter {
         if (max == -1) return -1;
         int has = lookup.getMachines(pl.getUniqueId());
 
-        int remain = max-has;
+        int remain = max - has;
 
-        if (remain > 0) { return remain; } else { return 0; }
+        return Math.max(remain, 0);
     }
 
     public boolean canPlaceMachine(Player pl) {
@@ -45,7 +41,6 @@ public class MachineLimiter {
         if (max == -1) return true;
         int left = getMachinesLeft(pl);
 
-        if (max >= left) return true;
-        return false;
+        return max >= left;
     }
 }

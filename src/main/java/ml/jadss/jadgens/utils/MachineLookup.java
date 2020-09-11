@@ -10,14 +10,13 @@ import java.util.UUID;
 
 public class MachineLookup {
     public MachineLookup() {
-        return;
     }
 
     public int getMachines(UUID owner) {
         int count = 0;
-        Set<String> keys = JadGens.getInstance().getDataFile().data().getConfigurationSection("machines").getKeys(false);
+        Set<String> keys = JadGens.getInstance().getDataFile().getData().getConfigurationSection("machines").getKeys(false);
         for (String key : keys) {
-            if (JadGens.getInstance().getDataFile().data().getString("machines." + key + ".owner").equals(String.valueOf(owner))) {
+            if (JadGens.getInstance().getDataFile().getData().getString("machines." + key + ".owner").equals(String.valueOf(owner))) {
                 count++;
             }
         }
@@ -25,15 +24,17 @@ public class MachineLookup {
     }
 
     public boolean isMachine(Block block) {
-        if (block == null) return false;
+        if (block == null)
+            return false;
         String id = block.getLocation().getWorld().getName() + "_" + block.getLocation().getBlockX() + "_" + block.getLocation().getBlockY() + "_" + block.getLocation().getBlockZ();
         Machine machine = new Machine(id);
         return machine.getId() != null;
     }
 
-    public boolean isMachine(Location loc) {
-        if (loc == null) return false;
-        String id = loc.getWorld().getName() + "_" + loc.getBlockX() + "_" + loc.getBlockY() + "_" + loc.getBlockZ();
+    public boolean isMachine(Location location) {
+        if (location == null)
+            return false;
+        String id = location.getWorld().getName() + "_" + location.getBlockX() + "_" + location.getBlockY() + "_" + location.getBlockZ();
         Machine machine = new Machine(id);
         return machine.getId() != null;
     }
@@ -46,9 +47,9 @@ public class MachineLookup {
 
     public int getMachines(UUID owner, int machineType) {
         int count = 0;
-        Set<String> keys = JadGens.getInstance().getDataFile().data().getConfigurationSection("machines").getKeys(false);
+        Set<String> keys = JadGens.getInstance().getDataFile().getData().getConfigurationSection("machines").getKeys(false);
         for (String key : keys) {
-            if (JadGens.getInstance().getDataFile().data().getString("machines." + key + ".owner").equals(String.valueOf(owner)) && JadGens.getInstance().getDataFile().data().getInt("machines." + key + ".type") == machineType) {
+            if (JadGens.getInstance().getDataFile().getData().getString("machines." + key + ".owner").equals(String.valueOf(owner)) && JadGens.getInstance().getDataFile().getData().getInt("machines." + key + ".type") == machineType) {
                 count++;
             }
         }

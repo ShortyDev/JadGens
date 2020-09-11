@@ -1,5 +1,6 @@
 package ml.jadss.jadgens.utils;
 
+import lombok.Getter;
 import ml.jadss.jadgens.JadGens;
 import ml.jadss.jadgens.nbt.NBTCompound;
 import ml.jadss.jadgens.nbt.NBTItem;
@@ -14,6 +15,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import java.util.ArrayList;
 import java.util.List;
 
+@Getter
 public class Fuel {
 
     private Integer drops;
@@ -35,14 +37,6 @@ public class Fuel {
         }
     }
 
-    public Integer getDrops() {
-        return drops;
-    }
-
-    public Integer getType() {
-        return type;
-    }
-
     public boolean isFuel(ItemStack item) {
         if (item == null) return false;
         NBTCompound nbtCompound = new NBTItem(item);
@@ -55,8 +49,8 @@ public class Fuel {
 
         meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', JadGens.getInstance().getConfig().getString("fuels." + id + ".displayName")));
         List<String> lore = new ArrayList<>();
-        for (String s : JadGens.getInstance().getConfig().getStringList("fuels." + id + ".lore")) {
-            lore.add(ChatColor.translateAlternateColorCodes('&', s));
+        for (String line : JadGens.getInstance().getConfig().getStringList("fuels." + id + ".lore")) {
+            lore.add(ChatColor.translateAlternateColorCodes('&', line));
         }
 
         if (JadGens.getInstance().getConfig().getBoolean("fuels." + id + ".glow")) {
@@ -76,7 +70,6 @@ public class Fuel {
             return null;
         }
 
-        fuel = nbtItem.getItem();
-        return fuel;
+        return nbtItem.getItem();
     }
 }

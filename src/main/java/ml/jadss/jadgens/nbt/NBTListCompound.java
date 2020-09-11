@@ -5,38 +5,37 @@ package ml.jadss.jadgens.nbt;
  * {@link NBTCompoundList} This Compound implementation is missing the ability
  * for further subCompounds and Lists. This class probably will change in the
  * future
- * 
- * @author tr7zw
  *
+ * @author tr7zw
  */
 public class NBTListCompound extends NBTCompound {
 
-	private NBTList<?> owner;
-	private Object compound;
+    private NBTList<?> owner;
+    private Object compound;
 
-	protected NBTListCompound(NBTList<?> parent, Object obj) {
-		super(null, null);
-		owner = parent;
-		compound = obj;
-	}
-	
-	public NBTList<?> getListParent() {
-		return owner;
-	}
+    protected NBTListCompound(NBTList<?> parent, Object obj) {
+        super(null, null);
+        owner = parent;
+        compound = obj;
+    }
 
-	@Override
-	public Object getCompound() {
-		return compound;
-	}
+    public NBTList<?> getListParent() {
+        return owner;
+    }
 
-	@Override
-	protected void setCompound(Object compound) {
-		this.compound = compound;
-	}
+    @Override
+    public Object getCompound() {
+        return compound;
+    }
 
-	@Override
-	protected void saveCompound() {
-		owner.save();
-	}
+    @Override
+    protected void setCompound(Object compound) {
+        this.compound = compound;
+    }
+
+    @Override
+    protected void saveCompound() {
+        owner.save();
+    }
 
 }

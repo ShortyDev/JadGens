@@ -8,64 +8,69 @@ import java.util.Set;
 
 public class PurgeMachines {
 
-    public PurgeMachines() { return; }
+    public PurgeMachines() {
+    }
 
     public void purgeMachines() {
-        Set<String> keys = data().getConfigurationSection("machines").getKeys(false);
+        Set<String> keys = getData().getConfigurationSection("machines").getKeys(false);
         for (String key : keys) {
-            int x = data().getInt("machines." + key + ".x");
-            int y = data().getInt("machines." + key + ".y");
-            int z = data().getInt("machines." + key + ".z");
-            World world = Bukkit.getServer().getWorld(data().getString("machines." + key + ".world"));
-            if (world == null)  {
-                data().set("machines." + key, null);
+            int x = getData().getInt("machines." + key + ".x");
+            int y = getData().getInt("machines." + key + ".y");
+            int z = getData().getInt("machines." + key + ".z");
+            World world = Bukkit.getServer().getWorld(getData().getString("machines." + key + ".world"));
+            if (world == null) {
+                getData().set("machines." + key, null);
             } else {
                 Location location = new Location(world, x, y, z);
                 location.getBlock().setType(Material.AIR);
-                data().set("machines." + key, null);
+                getData().set("machines." + key, null);
             }
         }
-        data().set("machines", null);
-        data().set("machines.setup", true);
-        data().set("machines.setup", null);
+        getData().set("machines", null);
+        getData().set("machines.setup", true);
+        getData().set("machines.setup", null);
         JadGens.getInstance().getDataFile().saveData();
         JadGens.getInstance().getDataFile().reloadData();
     }
 
     public boolean removeIfAir(String id) {
-        if (id == null) return false;
-        if (!JadGens.getInstance().getConfig().getBoolean("machinesConfig.autoDestroy")) return false;
-        World world = Bukkit.getServer().getWorld(data().getString("machines." + id + ".world"));
+        if (id == null)
+            return false;
+        if (!JadGens.getInstance().getConfig().getBoolean("machinesConfig.autoDestroy"))
+            return false;
+        World world = Bukkit.getServer().getWorld(getData().getString("machines." + id + ".world"));
         if (world == null) {
             Bukkit.getConsoleSender().sendMessage(ChatColor.translateAlternateColorCodes('&', "&3JadGens &7>> &eThe &3&lMachine &ewith &b&lID &a\"" + id + "\" &ewas &c&lRemoved&e!"));
-            data().set("machines." + id, null);
+            getData().set("machines." + id, null);
         }
-        Location loc = new Location(world, data().getInt("machines." + id + ".x"),
-                data().getInt("machines." + id + ".y"),
-                data().getInt("machines." + id + ".z"));
+        Location loc = new Location(world, getData().getInt("machines." + id + ".x"),
+                getData().getInt("machines." + id + ".y"),
+                getData().getInt("machines." + id + ".z"));
 
         if (new MachineLookup().isMachine(loc.getBlock())) {
             if (loc.getBlock().getType().equals(Material.AIR)) {
                 Bukkit.getConsoleSender().sendMessage(ChatColor.translateAlternateColorCodes('&', "&3JadGens &7>> &eThe &3&lMachine &ewith &b&lID &a\"" + id + "\" &ewas &c&lRemoved&e!"));
-                data().set("machines." + id, null);
+                getData().set("machines." + id, null);
             }
         }
         return false;
     }
 
     public void removeMachine(String id) {
-        if (id == null) return;
+        if (id == null)
+            return;
         Machine mac = new Machine(id);
-        if (mac.getId() == null) return;
+        if (mac.getId() == null)
+            return;
         if (mac.getLocation().getWorld() == null) {
-            data().set("machines." + id, null);
+            getData().set("machines." + id, null);
         }
         mac.getLocation().getBlock().setType(Material.AIR);
-        data().set("machines." + id, null);
+        getData().set("machines." + id, null);
     }
 
-    public FileConfiguration data() {
-        return JadGens.getInstance().getDataFile().data();
+    public FileConfiguration getData() {
+        return JadGens.getInstance().getDataFile().getData();
     }
 
 }
