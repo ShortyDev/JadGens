@@ -30,8 +30,8 @@ public class MachineBreakEvent extends Event {
     }
 
     public void removeMachine() {
-        Machine mac = new Machine(block);
-        mac.removeFromConfig();
+        Machine machine = new Machine(block);
+        machine.removeFromConfig();
         block.setType(Material.AIR);
     }
 

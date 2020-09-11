@@ -32,13 +32,13 @@ public class MachineProduceEvent extends Event {
 
     private boolean cancelled;
 
-    public MachineProduceEvent(Machine mac) {
-        this.machine = mac;
-        this.dropsRemaining = mac.getDropsRemaining();
-        this.id = mac.getId();
-        this.location = mac.getLocation();
-        this.owner = UUID.fromString(mac.getUuid());
-        this.machineType = mac.getType();
+    public MachineProduceEvent(Machine machine) {
+        this.machine = machine;
+        this.dropsRemaining = machine.getDropsRemaining();
+        this.id = machine.getId();
+        this.location = machine.getLocation();
+        this.owner = UUID.fromString(machine.getUuid());
+        this.machineType = machine.getType();
     }
 
     public void setDropsRemaining(int dropsRemaining) {
